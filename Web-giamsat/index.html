@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Vị trí</title>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <link href="js/jquery-ui.min.css" rel="stylesheet" />
+    <link href="mycs.css" rel="stylesheet" />
+    <script src="myjs.js" defer></script> 
+</head>
+<body>
+    <div>
+        <div class="nguoi" id="nguoi1" onclick="openDialog('Chung 1', 'vitrichung1')">
+            <b>Chung 1</b>
+            <img src="image/people.png" />
+            <p id="vitrichung1">trường</p>
+        </div>
+        <div class="nguoi" id="nguoi2" onclick="openDialog('Chung 2', 'vitrichung2')">
+            <b>Chung 2</b>
+            <img src="image/people.png" />
+            <p id="vitrichung2">trường</p>
+        </div>
+        <div class="nguoi" id="nguoi3" onclick="openDialog('Chung 3', 'vitrichung3')">
+            <b>Chung 3</b>
+            <img src="image/people.png" />
+            <p id="vitrichung3">chợ</p>
+        </div>
+        <div class="nguoi" id="nguoi4" onclick="openDialog('Chung 4', 'vitrichung4')">
+            <b>Chung 4</b>
+            <img src="image/people.png" />
+            <p id="vitrichung4">nhà</p>
+        </div>
+        <div class="nguoi" id="nguoi5" onclick="openDialog('Chung 5', 'vitrichung5')">
+            <b>Chung 5</b>
+            <img src="image/people.png" />
+            <p id="vitrichung5">trọ</p>
+        </div>
+
+        <button onclick="document.getElementById('infoDialog').showModal()">Mở dialog</button>
+
+        <dialog id="infoDialog">
+            <span class="close" onclick="closeDialog()">×</span>
+            <h2>Nhập thông tin cho <span id="nguoi-name"></span></h2>
+            <form id="infoForm">
+                <label for="name">Vị trí:</label><br>
+                <input type="text" id="name" name="name" required><br><br>
+
+                <button id="btngui" type="submit">Gửi</button>
+            </form>
+        </dialog>
+    </div>
+</body>
+</html>
