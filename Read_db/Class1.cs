@@ -52,7 +52,7 @@ namespace Read_db
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandText = "SP_API";
                         cmd.Parameters.Add("@action", SqlDbType.VarChar, 50).Value = "control";
-                        cmd.Parameters.Add("@idSv", SqlDbType.Int).Value = idSV;
+                        cmd.Parameters.Add("@idSv", SqlDbType.Int).Value =idSV;
                         cmd.Parameters.Add("@control_status", SqlDbType.Int).Value = status;
                         object result = cmd.ExecuteScalar();
                         json = (string)result;
@@ -66,7 +66,7 @@ namespace Read_db
 
             return json;
         }
-        public string get_Lichsu(string idSV)
+        public string get_Lichsu(int idSV)
         {
             string json = "";
             try
@@ -79,11 +79,8 @@ namespace Read_db
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandText = "SP_API";
                         cmd.Parameters.Add("@action", SqlDbType.VarChar, 50).Value = "get_lichsu";
-                        if(idSV == "chung1")
-                        {
-                            idSV = 101+"";
-                        }
-                        cmd.Parameters.Add("@idSv", SqlDbType.Int).Value = int.Parse(idSV); ;
+                    
+                        cmd.Parameters.Add("@idSv", SqlDbType.Int).Value =idSV ;
                         object result = cmd.ExecuteScalar();
                         json = (string)result;
                     }

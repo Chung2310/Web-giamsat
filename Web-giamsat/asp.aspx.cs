@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -19,26 +20,41 @@ namespace Web_giamsat
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            get_status();
-            
+            string action = this.Request["action"];
+
+            switch (action)
+            {
+                case "get_status":
+                    get_status();
+                    break;
+                case "get_history":
+                    get_history(101);
+                    break;
+                case "control":
+                    
+                    break;
+               
+            }
+
         }
 
         [WebMethod]
-        public static string get_history(string id)
+        public static string get_history(int id)
         {
             PhanHoi phanHoi = new PhanHoi();
             try
             {
                 Read_db.Read_sql db = new Read_db.Read_sql();
                 db.str_sql = "Data Source=DESKTOP-KDA72GQ\\MSSQLCHUNG;Initial Catalog=Webgiamsat;Integrated Security=True;Connect Timeout=30;Encrypt=False";
+                
                 string json = db.get_Lichsu(id);
-                return json;  // Trả về JSON cho AJAX
+                return json; 
             }
             catch (Exception ex)
             {
                 phanHoi.ok = false;
                 phanHoi.msg = "Lỗi rồi!" + ex.Message;
-                return JsonConvert.SerializeObject(phanHoi);  // Trả về lỗi dưới dạng JSON
+                return JsonConvert.SerializeObject(phanHoi); 
             }
         }
 

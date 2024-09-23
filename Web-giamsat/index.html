@@ -7,41 +7,117 @@
     <script src="js/jquery-ui.min.js"></script>
     <link href="js/jquery-ui.min.css" rel="stylesheet" />
     <link href="mycs.css" rel="stylesheet" />
-    <script src="myjs.js" defer></script> 
+    <script src="myjs.js" defer></script>
+    <script>
+        $(document).ready(function () {
+    
+            $("#dialog").dialog({
+                autoOpen: false,
+                modal: true,
+                width: 400,
+                height: 300
+            });
+
+            $(".nguoi").click(function () {
+                var nguoiId = $(this).attr("id"); 
+                var idNumber = parseInt(nguoiId.replace("nguoi", "")) + 100;  
+
+                $.ajax({
+                    type: "POST",
+                    url: "asp.aspx/get_history",  
+                    data: JSON.stringify({ id: idNumber }),  
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        console.log("Phản hồi từ server:", response);
+
+                        try {
+                            var data = JSON.parse(response.d);
+
+                            if (Array.isArray(data) && data.length > 0) {
+                                var historyHtml = "<ul>";
+
+                                function getViTriName(id) {
+                                    switch (id) {
+                                        case 1:
+                                            return "Chợ";
+                                        case 2:
+                                            return "Trường";
+                                        case 3:
+                                            return "Nhà";
+                                        case 4:
+                                            return "Trọ";
+                                        case 5:
+                                            return "Không biết";
+                                        default:
+                                            return "Vị trí không xác định";
+                                    }
+                                }
+
+                              
+                                data.forEach(function (item) {
+                                    var viTri = getViTriName(item.id_vitri_hientai);
+                                    historyHtml += "<li>Vị trí: " + viTri + " - Thời gian: " + item.time + "</li>";
+                                });
+
+                                historyHtml += "</ul>";
+                                $("#dialogContent").html(historyHtml);
+                            } else {
+                                $("#dialogContent").text("Không có dữ liệu lịch sử.");
+                            }
+
+                     
+                            $("#dialog").dialog("open");
+                        } catch (err) {
+                            console.error("Lỗi phân tích JSON:", err);
+                            $("#dialogContent").text("Lỗi khi phân tích dữ liệu: " + err.message);
+                            $("#dialog").dialog("open");
+                        }
+                    },
+                    error: function (xhr, status, error) {
+              
+                        $("#dialogContent").text("Có lỗi xảy ra khi lấy lịch sử: " + error);
+                        $("#dialog").dialog("open");  
+                    }
+                });
+            });
+        });
+
+    </script>
 </head>
 <body>
     <div>
-        <div class="nguoi" id="nguoi1" onclick="openDialog('Chung 1', 'vitrichung1')">
+        <div class="nguoi" id="nguoi1">
             <b>Chung 1</b>
             <img src="image/people.png" />
             <p id="vitrichung1"></p>
         </div>
-        <div class="nguoi" id="nguoi2" onclick="openDialog('Chung 2', 'vitrichung2')">
+        <div class="nguoi" id="nguoi2">
             <b>Chung 2</b>
             <img src="image/people.png" />
             <p id="vitrichung2"></p>
         </div>
-        <div class="nguoi" id="nguoi3" onclick="openDialog('Chung 3', 'vitrichung3')">
+        <div class="nguoi" id="nguoi3">
             <b>Chung 3</b>
             <img src="image/people.png" />
             <p id="vitrichung3"></p>
         </div>
-        <div class="nguoi" id="nguoi4" onclick="openDialog('Chung 4', 'vitrichung4')">
+        <div class="nguoi" id="nguoi4">
             <b>Chung 4</b>
             <img src="image/people.png" />
             <p id="vitrichung4"></p>
         </div>
-        <div class="nguoi" id="nguoi5" onclick="openDialog('Chung 5', 'vitrichung5')">
+        <div class="nguoi" id="nguoi5">
             <b>Chung 5</b>
             <img src="image/people.png" />
             <p id="vitrichung5"></p>
         </div>
-        <div id="loitaiday"> </div>
+        <div id="loitaiday"></div>
 
+   
         <div id="dialog" title="Lịch Sử">
             <p id="dialogContent">Nội dung lịch sử sẽ hiển thị ở đây...</p>
         </div>
-
     </div>
 </body>
 </html>

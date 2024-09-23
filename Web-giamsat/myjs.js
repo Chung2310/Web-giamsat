@@ -2,44 +2,9 @@
 //    $(".nguoi").draggable();
 //});
 
-function openDialog(id, positionId) {
-    // Sử dụng AJAX để lấy lịch sử từ server
-    $.ajax({
-        url: 'asp.aspx/get_history',  // File ASPX với WebMethod
-        type: 'POST',
-        data: JSON.stringify({ id: id }),  // Truyền tham số dưới dạng JSON
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (response) {
-            // Hiển thị dữ liệu lịch sử trong dialog
-            $('#dialogContent').html(response.d);  // Dữ liệu trả về từ WebMethod
+function openDialog(id_sv) {
+    get
 
-            // Mở hộp thoại
-            $("#dialog").dialog({
-                modal: true,
-                width: 400,
-                height: 200,
-                buttons: {
-                    "Đóng": function () {
-                        $(this).dialog("close");
-                    }
-                }
-            });
-        },
-        error: function (xhr, status, error) {
-            $('#dialogContent').html("Đã có lỗi xảy ra: " + error);
-            $("#dialog").dialog({
-                modal: true,
-                width: 400,
-                height: 200,
-                buttons: {
-                    "Đóng": function () {
-                        $(this).dialog("close");
-                    }
-                }
-            });
-        }
-    });
 }
 
 $(function () {
