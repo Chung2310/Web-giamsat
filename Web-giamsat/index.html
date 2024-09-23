@@ -38,18 +38,10 @@
         </div>
         <div id="loitaiday"> </div>
 
-        <button onclick="document.getElementById('infoDialog').showModal()">Mở dialog</button>
+        <div id="dialog" title="Lịch Sử">
+            <p id="dialogContent">Nội dung lịch sử sẽ hiển thị ở đây...</p>
+        </div>
 
-        <dialog id="infoDialog">
-            <span class="close" onclick="closeDialog()">×</span>
-            <h2>Nhập thông tin cho <span id="nguoi-name"></span></h2>
-            <form id="infoForm">
-                <label for="name">Vị trí:</label><br>
-                <input type="text" id="name" name="name" required><br><br>
-
-                <button id="btngui" type="submit">Gửi</button>
-            </form>
-        </dialog>
     </div>
 </body>
 </html>

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -18,36 +19,51 @@ namespace Web_giamsat
         }
         protected void Page_Load(object sender, EventArgs e)
         {
+            get_status();
+            
+        }
+
+        [WebMethod]
+        public static string get_history(string id)
+        {
             PhanHoi phanHoi = new PhanHoi();
             try
             {
-                
-                string db_path = Server.MapPath("mydb.txt");
-                string noidung = System.IO.File.ReadAllText(db_path);
-
-                string[] lines = noidung.Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
-                string vitrisv = lines[0].Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[1];
-                phanHoi.sv = doc_mang(vitrisv);
-                phanHoi.ok = true;
-                phanHoi.msg = "được rồi!";
+                Read_db.Read_sql db = new Read_db.Read_sql();
+                db.str_sql = "Data Source=DESKTOP-KDA72GQ\\MSSQLCHUNG;Initial Catalog=Webgiamsat;Integrated Security=True;Connect Timeout=30;Encrypt=False";
+                string json = db.get_Lichsu(id);
+                return json;  // Trả về JSON cho AJAX
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
+                phanHoi.ok = false;
+                phanHoi.msg = "Lỗi rồi!" + ex.Message;
+                return JsonConvert.SerializeObject(phanHoi);  // Trả về lỗi dưới dạng JSON
+            }
+        }
+
+        [WebMethod]
+        public void get_status()
+        {
+            PhanHoi phanHoi = new PhanHoi();
+            try
+            {
+
+                Read_db.Read_sql db = new Read_db.Read_sql();
+                db.str_sql = "Data Source=DESKTOP-KDA72GQ\\MSSQLCHUNG;Initial Catalog=Webgiamsat;Integrated Security=True;Connect Timeout=30;Encrypt=False";
+
+                string json = db.get_status();
+                this.Response.Write(json);
+
+
+
+            }
+            catch (Exception ex)
+            {
                 phanHoi.ok = false;
                 phanHoi.msg = "lỗi rồi!" + ex.Message;
             }
-            string json = JsonConvert.SerializeObject(phanHoi);
-            this.Response.Write(json);
         }
-        List<int> doc_mang(string s)
-        {
-            List<int> L = new List<int>();
-            string[] items = s.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string item in items)
-            {
-                int i = int.Parse(item);
-                L.Add(i);
-            }
-            return L;
-        }
+        
     }
 }
